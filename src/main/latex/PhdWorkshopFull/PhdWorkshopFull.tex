@@ -24,21 +24,55 @@ A case study for demonstrating the capabilities of the algorithm on a simple exa
 
 \section{Introduction}
 
-In the field of fault detection of large-scale complex process systems mainly discrete approaches 
+% In the field of fault detection of large-scale complex process systems mainly discrete approaches 
+% 
 
-As traditional types of HAZID (HAZard IDentification) analyses, the HAZOP (HAZard and OPerability) analysis and the FMEA (Fault Mode Effect Analysis) analysis is widely used in the field of process system engineering to ensure operational safety. HAZOP deals with system-wide effects of faults on system components, while FMEA deals with the effects of component failures on the whole system. A possible combination of these different approaches can be found in \cite{BLENDEDHAZIDARTICLE}.
+Input-output event sequences. Operational procedures in process systems are detailed list of instructions for the plant operator personnel to perform certain operations on the plant. Procedures can be exactly described using finite input-output event sequences where one single event describes a change in either the inputs or the outputs of the system at a specific time instant. Therefore the syntax of a single input-output event is the following:
+
+event_x = (<time_instant>;{set of actual input states};{set of actual output states})
+
+The inputs in an event always refers to a state of an actuator component in the process system (eg. in the case of a valve it can be opened(1) or closed(0)). On the other hand, the outputs in an event refers to a state of a continuous output(?) of the process system in qualitative space. 
+
+Input-output sequences are referred as traces later.
+
+For every operational procedure there exists a trace which describe its behavior under fault-free conditions. The method compares this trace to other traces which may have been executed under faulty conditions (called analysis traces), it uses the deviations to find a possible root cause.
+
+Devations. Nominal and possibly faulty traces can be compared by comparing their correspoinding event fragments. Two deviation types can be distinguished
+
+\begin{itemize}
+\item Timely deviations. The input-output combination of the event did not happen exactly at the time instant as in the nominal event. 
+	\begin{itemize}
+	  \item earlier The event happened earlier.
+	  \item later. The event happened later.
+	  \item never-happened. The event never happened at all.
+	\end{itemize}
+\item Measurable deviations. The output of the event is different from the nominal event. The relational operator is described in \cite{QUALCAL} to compare different qualitative values.
+	\begin{itemize}
+	  \item greater The output is greater.
+	  \item smaller The output is smaller.
+	\end{itemize}
+\end{itemize}
+
+It is possible to have both timely and measurable deviations for a single event. For example:
+
+(1;1,0;LOW) (2;1,0,NORMAL) and (1;1,0,NO) (2;1,0,NO) might be
+
+Consider an example:
+
+(1;0,0;NO) (2;1,0;LOW) (3;1,0;NORMAL) (4;1,1;NORMAL)
 
 
+Procedure HAZID. As a traditional type of HAZID (HAZard IDentification) analysis, the HAZOP (HAZard and OPerability) analysis is widely used in the field of process system engineering to ensure operational safety during functioning. This analysis deals with system-wide effects of component faults, and presents these effects in a three column spreadsheet, where the column names are "Cause", "Deviation" and "Implication". The method can be extended to store procedural diagnostic information by putting deviations and root causes in the columns (???)s.
 
+EXAMPLE HAZOP
 
+EXAMPLE PROCEDURE HAZID 
+
+In this paper the diagnostic idea is summarized briefly from a practical point of view, for a more exhausting theoritical description refer to \cite{KES2011}.
 
 \section{Event sequences}
 
-
-
 \section{Operational procedures}
-
-
 
 Operational procedures represent...
 
