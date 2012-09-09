@@ -17,27 +17,27 @@
 \maketitle
 
 \begin{abstract} 
-Detecting and diagnosing faults in complex process systems is an important task. Albeit there had been results (\cite{original}) for detection of faults in steady-state process systems using hazard identification (HAZID), HAZOP and FMEA analysis results, but the transient case - when the plant is controlled by an operational procedure - is not addressed in them. This paper extends these results by formally defining a diagnostic algorithm for this case based on a novel diagnostic idea described in \cite{KES2011}. 
-
-A case study for demonstrating the capabilities of the algorithm on a simple example process system model with multiple operational procedures and multiple single faults is also presented.
+Detecting and diagnosing faults in complex process systems is an important task. Albeit there had been results (\cite{original}) for detection of faults in steady-state process systems using hazard identification (HAZID), HAZOP and FMEA analysis results, but the transient case - when the plant is controlled by an operational procedure - is not addressed in them. This paper extends these results by formally defining a diagnostic algorithm for this case based on a novel diagnostic idea described in \cite{KES2011} using the traditional HAZID component failure analysis as a basis. A case study for demonstrating the capabilities of the algorithm on a simple example process system model with multiple operational procedures and multiple single faults is also presented.
 \end{abstract}
 
 \section{Introduction}
 
-% In the field of fault detection of large-scale complex process systems mainly discrete approaches 
-% 
+In the following section the diagnostic idea is summarized from a practical point of view. For a detailed theoritical description please refer to \cite{KES2011}.
 
-Input-output event sequences. Operational procedures in process systems are detailed list of instructions for the plant operator personnel to perform certain operations on the plant. Procedures can be exactly described using finite input-output event sequences where one single event describes a change in either the inputs or the outputs of the system at a specific time instant. Therefore the syntax of a single input-output event is the following:
+\subsection{Input-output event sequences}
 
-event_x = (<time_instant>;{set of actual input states};{set of actual output states})
+ Operational procedures in process systems are detailed list of instructions for the plant operator personnel to perform certain operations on the plant. Procedures can be exactly described using finite input-output event sequences where one single event describes a change in either the inputs or the outputs of the system at a specific time instant. Therefore the syntax of a single input-output event is the following:
 
-The inputs in an event always refers to a state of an actuator component in the process system (eg. in the case of a valve it can be opened(1) or closed(0)). On the other hand, the outputs in an event refers to a state of a continuous output(?) of the process system in qualitative space. 
+event_x = (<time-instant>;{set of actual input states};{set of actual output states})
 
-Input-output sequences are referred as traces later.
+The inputs in an event always refers to a state of an actuator component in the process system (eg. in the case of a valve it can be opened(1) or closed(0)). On the other hand, the outputs in an event refers to a state of a continuous output(?) of the process system in qualitative space. Input-output sequences are referred as traces later. Consider aan example:
 
-For every operational procedure there exists a trace which describe its behavior under fault-free conditions. The method compares this trace to other traces which may have been executed under faulty conditions (called analysis traces), it uses the deviations to find a possible root cause.
+<TRACE-EXAMPLE>
 
-Devations. Nominal and possibly faulty traces can be compared by comparing their correspoinding event fragments. Two deviation types can be distinguished
+For every operational procedure there exists a trace which describe its behavior under fault-free conditions. The method compares this trace to other traces which may have been executed under faulty conditions (called analysis traces), these deviations are used to find a possible root cause.
+
+\subsection{Deviations}
+Nominal and possibly faulty traces can be compared by comparing their correspoinding event fragments. Two main deviation types can be distinguished.
 
 \begin{itemize}
 \item Timely deviations. The input-output combination of the event did not happen exactly at the time instant as in the nominal event. 
@@ -46,7 +46,7 @@ Devations. Nominal and possibly faulty traces can be compared by comparing their
 	  \item later. The event happened later.
 	  \item never-happened. The event never happened at all.
 	\end{itemize}
-\item Measurable deviations. The output of the event is different from the nominal event. The relational operator is described in \cite{QUALCAL} to compare different qualitative values.
+\item Qualitative difference deviations. The output of the event is different from the nominal event. The relational operator is described in \cite{QUALCAL} to compare different qualitative values.
 	\begin{itemize}
 	  \item greater The output is greater.
 	  \item smaller The output is smaller.
@@ -55,53 +55,17 @@ Devations. Nominal and possibly faulty traces can be compared by comparing their
 
 It is possible to have both timely and measurable deviations for a single event. For example:
 
-(1;1,0;LOW) (2;1,0,NORMAL) and (1;1,0,NO) (2;1,0,NO) might be
+<EXAMPLE FOR A SMALLER & NEVER-HAPPENED DEVIATION PAIR>
 
-Consider an example:
+\subsection{Procedure HAZID}
 
-(1;0,0;NO) (2;1,0;LOW) (3;1,0;NORMAL) (4;1,1;NORMAL)
-
-
-Procedure HAZID. As a traditional type of HAZID (HAZard IDentification) analysis, the HAZOP (HAZard and OPerability) analysis is widely used in the field of process system engineering to ensure operational safety during functioning. This analysis deals with system-wide effects of component faults, and presents these effects in a three column spreadsheet, where the column names are "Cause", "Deviation" and "Implication". The method can be extended to store procedural diagnostic information by putting deviations and root causes in the columns (???)s.
+As a traditional type of HAZID (HAZard IDentification) analysis, the HAZOP (HAZard and OPerability) analysis is widely used in the field of process system engineering to ensure operational safety during function of the plant. This analysis deals with system-wide effects of component faults, and presents these in a HAZID spreadsheet, with columns "Cause", "Deviation" and "Implication" describing conditions and effects using guidewords and process system data. See <EXAMPLE-HAZOP-TBL> and <ARTICLE-REF>. This analysis can be modified to contain trace deviations and root causes in a way that trace deviations can be traced back to component faults. See <EXAMPLE-PROCEDURE-HAZID>. 
 
 EXAMPLE HAZOP
 
 EXAMPLE PROCEDURE HAZID 
 
-In this paper the diagnostic idea is summarized briefly from a practical point of view, for a more exhausting theoritical description refer to \cite{KES2011}.
-
-\section{Event sequences}
-
-\section{Operational procedures}
-
-Operational procedures represent...
-
-... and can be percieved as finite
-
-\section{Traces}
-
-An event is a set of all input states and output states of the process system at a specific time instant. In this regard, traces can be percieved as finite sequence of events, and can describe an execution of an operationg procedure in a process system.
-
-\section{Deviations}
-
-Traces of the same operating procedure can be compared using their corresponding event components.
-
-TIMELY COMPARISON
-
-\begin{itemize}
-\item earlier
-\item later
-\item never-happened
-\end{itemize}
-
-QUALITATIVE-COMPARISON
-
-\begin{itemize}
-\item smaller
-\item greater
-\end{itemize}
-
-
+This extended analysis, called Procedure HAZID, is used in the algorithm to find possible root causes from trace deviations.
 %
 \section{Diagnosis Using Observed Event Sequences and Procedure HAZID}
 \label{sec:reasoning}
@@ -233,16 +197,14 @@ For example, for the faulty trace case presented in section \ref{sec:casestudy},
 \end{table*}
 
 \section{Implementation}
-The algorithm was implemented in Java and uses a simple XML format for parsing the nominal and the analysis trace and the HAZID spreadsheet. During execution it can print out the following information to the console:
+The algorithm was implemented in Java and uses a simple XML format for parsing the nominal and the analysis trace and the HAZID spreadsheet. During execution the following information is printed out to the console:
 
 \begin{itemize}
-
 \item The parsed nominal, analysis trace and HAZID spreadsheet.
 \item Set of deviations between the nominal and analysis trace.
 \item Set of deviation pairs used to start the reasoning procedure.
 \item Set of paths which either lead to a root cause or a non-root cause.
 \item Set of identified root and non-root causes.
-
 \end{itemize}
 
 The source code of the algorithm can be acquired from \ref{GITHUB}.
@@ -259,7 +221,7 @@ $(1;0,1;NRM)	(2;0,1;LOW) (3;0,1;NO) (4;0,0;NO)$
 $(1;1,0;NO) (2;1,0;LOW) (3;1,0;NRM) (4;0,0;NRM)$
 \end{itemize}
 
-These single failures were used to test the algorithm:
+Seven single failures were used to test the algorithm:
 \begin{enumerate}
 \item The leak of the tank. On the leak the fluid loss over time was equal to open output (VA2) valve.
 \item Input (VA1) or output (VA2) valve close failure (valve cannot be closed).
@@ -267,7 +229,7 @@ These single failures were used to test the algorithm:
 \item Additive positive or negative bias of the tank level sensor (sensor was measuring 
 \end{enumerate}
 
-The HAZID tables containing the fault root causes based on the faulty traces was created for each operational procedure. For the normal operation refer to Table \ref{tab:normalophazid}
+The HAZID tables containing the fault root causes based on the faulty traces was created for each operational procedure. For the "Normal operation" procedure refer to Table \ref{tab:normalophazid}
 
 \begin{table}
 \label{tab:normalophazid}
@@ -320,7 +282,7 @@ After executing the algorithm on the nominal and faulty traces and the proper HA
 
 \end{itemize}
 
-Similar results were obtained after executing the algorithm for the other operational procedures. Based on them, the following observations can be made:
+Similar results were obtained after executing the algorithm for the other operational procedures. Based on them, these observations can be made:
 \begin{enumerate}
 \item When the faulty trace generates very representative deviations then the algorithm is accurate (in the case of POS-BIAS(1)).
 \item When the faulty trace is identical to the nominal or too few deviations can be found, then faults cannot be diagnosed (in the case of VA2-CONGESTION(1), VA1-CLOSEFAILURE(1) or VA2-CLOSEFAILURE(1)).
@@ -330,14 +292,14 @@ Similar results were obtained after executing the algorithm for the other operat
 
 \section {Future work}
 
-In order to increase the accurancy of the diagnostic algorithm, the following improvements can be made to the model of the system:
+In order to increase the accurancy of the diagnostic algorithm, the following improvements shall be made to the model of the system:
 \begin{enumerate}
-\item Increase the size of the qualitative range (and trace length at the same time). This will result in a greater set of deviations and the HAZID table will contain more accurate paths to failures.
+\item Increase the size of the qualitative range (and trace length at the same time). This will result in a greater set of deviations and the HAZID table will contain more accurate (unique) paths to failures.
 \item Increase the granularity of the qualitative comparison operators (SMALLER and GREATER type deviations). This will make smaller and greater differences in the qualitative output distinguishable.
-\item Increase the number of analysed outputs in the system (for example in the case of REF, measure an overflow sensor of the tank as well). Increased number of outputs in the HAZID table might yield to an increased accurancy in finding the root cause. In this case the algorithm need to be altered as well to handle this scenario.
+\item Increase the number of analysed outputs in the system (for example in the case of REF, measure an overflow sensor of the tank as well). Increased number of outputs in the HAZID table might yield to an increased accurancy in finding the root cause. In this case the algorithm need to be altered as well to handle the scenario.
 \end{enumerate}
 
-The speed of fault diagnosis can be increased if the method could be extended to work on real-time trace information instead of offline trace information. In this case the algorithm can be used in real-time fault detection in process systems during operational procedure execution.
+The method could be extended to work on real-time trace deviation data instead of offline data, therefore the algorithm can be tried out in real-time fault detection in process systems.
 
 \section{Conclusion}
 A novel diagnostic algorithm was described in this paper based on an extended HAZID methodology and diagnostic idea presented earlier in \cite{KES2011}. The algorithm was implemeneted in Java and uses a simple XML data format as input for the traces and HAZID information.
