@@ -28,7 +28,7 @@ In the following section the diagnostic idea is summarized from a practical poin
 
  Operational procedures in process systems are detailed list of instructions for the plant operator personnel to perform certain operations on the plant. Procedures can be exactly described using finite input-output event sequences where one single event describes a change in either the inputs or the outputs of the system at a specific time instant. Therefore the syntax of a single input-output event is the following:
 
-event_x = (<time-instant>;{set of actual input states};{set of actual output states})
+$event_x = (<time-instant>;{set of actual input states};{set of actual output states})$
 
 The inputs in an event always refers to a state of an actuator component in the process system (eg. in the case of a valve it can be opened(1) or closed(0)). On the other hand, the outputs in an event refers to a state of a continuous output(?) of the process system in qualitative space. Input-output sequences are referred as traces later. Consider aan example:
 
@@ -55,15 +55,15 @@ Nominal and possibly faulty traces can be compared by comparing their correspoin
 
 It is possible to have both timely and measurable deviations for a single event. For example:
 
-<EXAMPLE FOR A SMALLER & NEVER-HAPPENED DEVIATION PAIR>
+<EXAMPLE FOR A SMALLER AND NEVER-HAPPENED DEVIATION PAIR>
 
 \subsection{Procedure HAZID}
 
 As a traditional type of HAZID (HAZard IDentification) analysis, the HAZOP (HAZard and OPerability) analysis is widely used in the field of process system engineering to ensure operational safety during function of the plant. This analysis deals with system-wide effects of component faults, and presents these in a HAZID spreadsheet, with columns "Cause", "Deviation" and "Implication" describing conditions and effects using guidewords and process system data. See <EXAMPLE-HAZOP-TBL> and <ARTICLE-REF>. This analysis can be modified to contain trace deviations and root causes in a way that trace deviations can be traced back to component faults. See <EXAMPLE-PROCEDURE-HAZID>. 
 
-EXAMPLE HAZOP
+<EXAMPLE HAZOP>
 
-EXAMPLE PROCEDURE HAZID 
+<EXAMPLE PROCEDURE HAZID>
 
 This extended analysis, called Procedure HAZID, is used in the algorithm to find possible root causes from trace deviations.
 %
