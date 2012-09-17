@@ -18,7 +18,7 @@
 
 \begin{abstract}
 
-A novel fault diagnostic algorithm is presented in this paper based on the diagnostic idea described in \cite{KES:-:2011} for fault detection during operational procedure execution in  process systems. The basis of the method is an extension of a traditional HAZID methodology with procedural deviation information. A case study for demonstrating the capabilities of the algorithm on a simple example process system model with multiple operational procedures and multiple single faults is also presented.
+A novel fault diagnostic algorithm is presented in this paper based on the diagnostic idea described in \cite{KES:-:2011} for fault detection during operational procedure execution in  process systems. The basis of the method is an extension of a traditional HAZID methodology with procedural deviation information. A case study for demonstrating the capabilities of the algorithm on a simple example process system model with multiple operational procedures and multiple component faults is also presented.
  
 \end{abstract}
 
@@ -35,36 +35,40 @@ Operational procedures in process systems are detailed list of instructions for 
 
 $event_x = (<time-instant>;{set~of~actual~input~states};{set~of~actual~output~states})$
 
-The inputs in an event always refers to a state of an actuator component in the process system (eg. in the case of a valve it can be opened(1) or closed(0)). On the other hand, the outputs in an event refers to a state of a continuous output(?) of the process system in qualitative space. Input-output sequences are referred as traces later. Consider an example:
+The inputs in an event always refers to a state of an actuator component in the process system (eg. in the case of a valve it can be opened(1) or closed(0)). On the other hand, the outputs in an event refers to a state of a continuous output(?) of the process system in qualitative space. Input-output event sequences are referred as traces later in the paper. As an example, a simple operational procedure can be described by the following trace:
 
-$TRACE-EXAMPLE$
+$(1;1,0;NO) (2;1,0;LOW) (3;1,0,NRM) (4;1,1,NRM)$
 
-For every operational procedure there exists a trace which describe its behavior under fault-free conditions. The method compares this trace to other traces which may have been executed under faulty conditions (called analysis traces), these deviations are used to find a possible root cause.
+For every operational procedure there exists a trace which describe its behavior under fault-free conditions. The method compares this trace to other traces which may have been executed under faulty conditions (called analysis traces), these differences (called deviations) are used to find a possible root cause.
 
 \subsection{Deviations}
-Nominal and possibly faulty traces can be compared by comparing their correspoinding event fragments. Two main deviation types can be distinguished.
+Nominal and analysis traces can be compared by comparing their correspoinding event fragments. Deviations are formed from a deviation guideword and the nominal event from which the corresponding analysis event is deviationg from. Two main deviation types can be distinguished.
 
 \begin{itemize}
 \item Timely deviations. The input-output combination of the event did not happen exactly at the time instant as in the nominal event. 
 	\begin{itemize}
-	  \item earlier The event happened earlier.
-	  \item later. The event happened later.
-	  \item never-happened. The event never happened at all.
+	  \item $EARLIER$ The event happened earlier in the analysis trace.
+	  \item $LATER$ The event happened later in the analysis trace.
+	  \item $NEVER-HAPPENED$ The event never happened at all in the analysis trace.
 	\end{itemize}
 \item Qualitative difference deviations. The output of the event is different from the nominal event. The relational operator is described in \cite{QUALCAL} to compare different qualitative values.
 	\begin{itemize}
-	  \item greater The output is greater.
-	  \item smaller The output is smaller.
+	  \item $GREATER$ The output is greater in the analysis trace.
+	  \item $SMALLER$ The output is smaller in the analysis trace.
 	\end{itemize}
 \end{itemize}
 
-It is possible to have both timely and measurable deviations for a single event. For example:
-
-$EXAMPLE~FOR~A~SMALLER~AND~NEVER-HAPPENED~DEVIATION~PAIR$
+It is possible to have both timely and measurable deviations for a single difference. For example comparing nominal event $(1;0,1;L)$ with analysis event $(1;0,1;0)$ might obviously lead to a $SMALLER(1;0,1;L)$ qualitative deviation, and it may lead to a $NEVER-HAPPENED(1;0,1;L)$ timely deviation if the analysis trace does not contain event $(1;0,1;L)$ at all (this might be the case when the tank has a leak and therefore it cannot fill up).
 
 \subsection{Procedure HAZID}
 
-As a traditional type of HAZID (HAZard IDentification) analysis, the HAZOP (HAZard and OPerability) analysis is widely used in the field of process system engineering to ensure operational safety during function of the plant. This analysis deals with system-wide effects of component faults, and presents these in a HAZID spreadsheet, with columns "Cause", "Deviation" and "Implication" describing conditions and effects using guidewords and process system data. See $EXAMPLE-HAZOP-TBL$ and $ARTICLE-REF$. This analysis can be modified to contain trace deviations and root causes in a way that trace deviations can be traced back to component faults. See $EXAMPLE-PROCEDURE-HAZID$. 
+As a traditional type of HAZID (HAZard IDentification) analysis, the HAZOP (HAZard and OPerability) analysis is widely used in the field of process system engineering to ensure operational safety during function. This analysis connects possible deviations of the measureable variables in the system with their causes and consequences. The results of such analysis are grouped by the type of the deviation (called "guideword") and are stored in a spreadsheet form (see table $EXAMPLE-HAZOP$). Extending this diagnostic idea to the domain of operational procedures, it becomes possible to connect deviations (see \ref{sec:Deviations}) between traces and find a component fault base on them.
+
+
+
+
+
+, and presents these in a HAZID spreadsheet, with columns "Cause", "Deviation" and "Implication" describing conditions and effects using guidewords and process system data. See $EXAMPLE-HAZOP-TBL$ and $ARTICLE-REF$. This analysis can be modified to contain trace deviations and root causes in a way that trace deviations can be traced back to component faults. See $EXAMPLE-PROCEDURE-HAZID$. 
 
 $EXAMPLE~HAZOP$
 
