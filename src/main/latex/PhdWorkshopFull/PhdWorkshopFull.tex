@@ -62,19 +62,16 @@ It is possible to have both timely and measurable deviations for a single differ
 
 \subsection{Procedure HAZID}
 
-As a traditional type of HAZID (HAZard IDentification) analysis, the HAZOP (HAZard and OPerability) analysis is widely used in the field of process system engineering to ensure operational safety during function. This analysis connects possible deviations of the measureable variables in the system with their causes and consequences. The results of such analysis are grouped by the type of the deviation (called "guideword") and are stored in a spreadsheet form (see table $EXAMPLE-HAZOP$). Extending this diagnostic idea to the domain of operational procedures, it becomes possible to connect deviations (see \ref{sec:Deviations}) between traces and find a component fault base on them.
-
-
-
-
-
-, and presents these in a HAZID spreadsheet, with columns "Cause", "Deviation" and "Implication" describing conditions and effects using guidewords and process system data. See $EXAMPLE-HAZOP-TBL$ and $ARTICLE-REF$. This analysis can be modified to contain trace deviations and root causes in a way that trace deviations can be traced back to component faults. See $EXAMPLE-PROCEDURE-HAZID$. 
+As a traditional type of HAZID (HAZard IDentification) analysis, the HAZOP (HAZard and OPerability) analysis is widely used in the field of process system engineering to ensure operational safety during function. This analysis connects possible deviations of the measureable variables in the system with their causes and consequences. The results of such analysis are grouped by the type of the deviation (called "guideword") and are stored in a spreadsheet form (see table $EXAMPLE-HAZOP$). Extending this diagnostic idea to the domain of operational procedures, it becomes possible to connect deviations (see \ref{sec:Deviations}) between traces and acquire feasible component failures. In such an extended HAZOP spreadsheet (see table $EXAMPLE-PROC-HAZID$) a chain of deviations can be set up to by matching deviations of the "Cause" and "Deviation" column with their equal counterparts in the "Cause" and "Implication" column for a different row (apart from some rows, which contain a root cause as a direct cause). Using sequences based on the set of deviations between the nominal and the analysis trace a possible root cause can be found. 
 
 $EXAMPLE~HAZOP$
 
 $EXAMPLE~PROCEDURE~HAZID$
 
-This extended analysis, called Procedure HAZID, is used in the algorithm to find possible root causes from trace deviations.
+The algorithm uses this technique first to find possible procedure HAZID rows to start from, then following these sequences towards a possible root cause, selecting new rows based on the initial set of deviations. Using this, it may end up at a root cause, or a row with deviations from which it cannot proceed forward - because they are not contained in the initial set of deviations. 
+
+If the table is inconsistent (not all deviation sequences lead to root causes) then it may end up at a row from where it cannot proceed forward, therefore the algorithm can be used for validation of Procedure HAZID analysis tables.
+
 %
 \section{Diagnosis Using Observed Event Sequences and Procedure HAZID}
 \label{sec:reasoning}
