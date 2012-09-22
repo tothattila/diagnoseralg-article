@@ -64,9 +64,38 @@ It is possible to have both timely and measurable deviations for a single differ
 
 As a traditional type of HAZID (HAZard IDentification) analysis, the HAZOP (HAZard and OPerability) analysis is widely used in the field of process system engineering to ensure operational safety during function. This analysis connects possible deviations of the measureable variables in the system with their causes and consequences. The results of such analysis are grouped by the type of the deviation (called "guideword") and are stored in a spreadsheet form (see table $EXAMPLE-HAZOP$). Extending this diagnostic idea to the domain of operational procedures, it becomes possible to connect deviations (see \ref{sec:Deviations}) between traces and acquire feasible component failures. In such an extended HAZOP spreadsheet (see table $EXAMPLE-PROC-HAZID$) a chain of deviations can be set up to by matching deviations of the "Cause" and "Deviation" column with their equal counterparts in the "Cause" and "Implication" column for a different row (apart from some rows, which contain a root cause as a direct cause). Using sequences based on the set of deviations between the nominal and the analysis trace a possible root cause can be found. 
 
-$EXAMPLE~HAZOP$
+\begin{table}
+\label{tab:ehazop}
+\begin{tabular}{|l|l|l|l|}
+\hline
+Guideword & Deviation & Causes & Consequences \\
+\hline
+low & LEVEL low & LOW input & LOW output
+& LEVEL low & TANK rupture & LOW output
+high & LEVEL high & HIGH input & TNAK rupture
+\hline
+\end{tabular}
+\end{table}
 
-$EXAMPLE~PROCEDURE~HAZID$
+\begin{table}
+\label{tab:eprochazid}
+\begin{tabular}{|l|l|l|}
+\hline
+Cause & Deviation & Implication \\
+\hline
+TANK-LEAK(1) & never-happened(2;1,0,L) & never-happened(3;1,0,N) \\
+never-happened(2;1,0,L) & never-happened(3;1,0,N) & never-happened(4;1,1,N) \\
+TANK-LEAK(1) & smaller(2;1,0,L) & smaller(3;1,0,N) \\
+smaller(2;1,0,L) & smaller(3;1,0,N) & smaller(4;1,1,N) \\
+POS-BIAS(1) & greater(1;1,0,0) & greater(2;1,0,L) \\
+greater(1;1,0,0) & greater(2;1,0,L) & greater(3;1,0,N) \\
+greater(2;1,0,L) & greater(3;1,0,N) & never-happened(4;1,1,N) \\
+POS-BIAS(1) & never-happened(1;1,0,0) & earlier(2;1,0,L) \\
+never-happened(1;1,0,0) & earlier(2;1,0,L) & earlier(3;1,0,N) \\
+\hline
+\end{tabular}
+\end{table}
+
 
 The algorithm uses this technique first to find possible procedure HAZID rows to start from, then following these sequences towards a possible root cause, selecting new rows based on the initial set of deviations. Using this, it may end up at a root cause, or a row with deviations from which it cannot proceed forward - because they are not contained in the initial set of deviations. 
 
