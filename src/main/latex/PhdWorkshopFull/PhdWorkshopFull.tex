@@ -23,13 +23,14 @@ A novel fault diagnostic algorithm is presented in this paper based on the diagn
 \end{abstract}
 
 \section{Introduction}
-Detecting and diagnosing faults in complex process systems is an important task in ensuring safe operation and preventing losses. Albeit there had been results (\cite{original}) for detection of faults in steady-state process systems using hazard identification (HAZID), HAZOP and FMEA analysis results, but the transient case - when the plant is controlled by an operational procedure - is not addressed in them. The diagnostic idea described in \cite{KES-2011} offers a solution for this case. By extending the traditional HAZOP analysis with procedural deviations and root causes a novel way for searching component faults is found. Using an appropriate comparison between reference and possibly faulty input-output event sequences of operational procedures a component fault can be diagnosed from the extended HAZOP analysis result. The algorithm formulated from this diagnostic idea is described in this paper. 
+Detecting and diagnosing faults in complex process systems is an important task in ensuring safe operation and preventing losses. Albeit there had been results (\cite{original}) for detection of faults in steady-state process systems using hazard identification (HAZID), HAZOP and FMEA analysis results, but the transient case - when the plant is controlled by an operational procedure - is not addressed in them. The diagnostic idea described in \cite{KES-2011} offers a solution for this case. By extending the traditional HAZOP analysis with procedural deviations and root causes a novel way for searching component faults can be constructed. Using an appropriate comparison between reference and possibly faulty input-output event sequences of operational procedures a component fault can be diagnosed from the extended HAZOP analysis result. The algorithm formulated from this diagnostic idea is described in this paper. 
 
 In the first part the basic notions which are used to describe and compare operational procedure executions with each other are collected, and the structure of the extended procedure HAZOP (procedure HAZID) analysis is described. Later the algorithm is formally defined and its capabilities are demonstrated using a simple case study. For an exhausting theoritical description of the idea please refer to \cite{KES2011}. 
 
 \section{Basic notions}
 
 \subsection{Input-output event sequences}
+\label{sec:ioseq}
 
 Operational procedures in process systems are detailed list of instructions for the plant operator personnel to perform certain operations on the plant. Procedures can be exactly described using finite input-output event sequences where one single event describes a change in either the inputs or the outputs of the system at a specific time instant. Therefore the syntax of a single input-output event is the following:
 
@@ -37,11 +38,12 @@ $event_x = (<time-instant>;{set~of~actual~input~states};{set~of~actual~output~st
 
 The inputs in an event always refers to a state of an actuator component in the process system (eg. in the case of a valve it can be opened(1) or closed(0)). On the other hand, the outputs in an event refers to a state of a continuous output(?) of the process system in qualitative space. Input-output event sequences are referred as traces later in the paper. As an example, a simple operational procedure can be described by the following trace:
 
-$(1;1,0;NO) (2;1,0;LOW) (3;1,0,NRM) (4;1,1,NRM)$
+$(1;1,0;NO) (2;1,0;LOW) (3;1,0;NRM) (4;1,1;NRM)$
 
 For every operational procedure there exists a trace which describe its behavior under fault-free conditions. The method compares this trace to other traces which may have been executed under faulty conditions (called analysis traces), these differences (called deviations) are used to find a possible root cause.
 
 \subsection{Deviations}
+\ref{sec:deviations}
 Nominal and analysis traces can be compared by comparing their correspoinding event fragments. Deviations are formed from a deviation guideword and the nominal event from which the corresponding analysis event is deviationg from. Two main deviation types can be distinguished.
 
 \begin{itemize}
@@ -61,24 +63,27 @@ Nominal and analysis traces can be compared by comparing their correspoinding ev
 It is possible to have both timely and measurable deviations for a single difference. For example comparing nominal event $(1;0,1;L)$ with analysis event $(1;0,1;0)$ might obviously lead to a $SMALLER(1;0,1;L)$ qualitative deviation, and it may lead to a $NEVER-HAPPENED(1;0,1;L)$ timely deviation if the analysis trace does not contain event $(1;0,1;L)$ at all (this might be the case when the tank has a leak and therefore it cannot fill up).
 
 \subsection{Procedure HAZID}
+\label{sec:prochazid}
 
 As a traditional type of HAZID (HAZard IDentification) analysis, the HAZOP (HAZard and OPerability) analysis is widely used in the field of process system engineering to ensure operational safety during function. This analysis connects possible deviations of the measureable variables in the system with their causes and consequences. The results of such analysis are grouped by the type of the deviation (called "guideword") and are stored in a spreadsheet form (see table $EXAMPLE-HAZOP$). Extending this diagnostic idea to the domain of operational procedures, it becomes possible to connect deviations (see \ref{sec:Deviations}) between traces and acquire feasible component failures. In such an extended HAZOP spreadsheet (see table $EXAMPLE-PROC-HAZID$) a chain of deviations can be set up to by matching deviations of the "Cause" and "Deviation" column with their equal counterparts in the "Cause" and "Implication" column for a different row (apart from some rows, which contain a root cause as a direct cause). Using sequences based on the set of deviations between the nominal and the analysis trace a possible root cause can be found. 
 
 \begin{table}
 \label{tab:ehazop}
+\caption{Part of a HAZOP analysis}
 \begin{tabular}{|l|l|l|l|}
 \hline
 Guideword & Deviation & Causes & Consequences \\
 \hline
 low & LEVEL low & LOW input & LOW output
 & LEVEL low & TANK rupture & LOW output
-high & LEVEL high & HIGH input & TNAK rupture
+high & LEVEL high & HIGH input & TANK rupture
 \hline
 \end{tabular}
 \end{table}
 
 \begin{table}
 \label{tab:eprochazid}
+\caption{Part of a extended procedure HAZID analysis}
 \begin{tabular}{|l|l|l|}
 \hline
 Cause & Deviation & Implication \\
@@ -105,7 +110,7 @@ If the table is inconsistent (not all deviation sequences lead to root causes) t
 \section{Diagnosis Using Observed Event Sequences and Procedure HAZID}
 \label{sec:reasoning}
 
-The diagnosis is based on the fact that a row in the Procedure HAZID 
+As described in \ref{sec:prochazid}, the diagnosis is based on the fact that a row in the Procedure HAZID 
 table (later refered as HAZID table) can be interpreted as one of the rules below:
 \begin{small}
 \begin{eqnarray*}
@@ -125,11 +130,11 @@ Note that a pair of predicates is used for both the forward reasoning
 The algorithm attempts to find the root causes, if there are any, based on the following input:
 \begin{itemize}
 	\item $\mathbf{Procedure~HAZID~table}$ (as a spreadsheet) The table is assumed not to contain duplicate rows containing the same "cause", "deviation" and "implication" triplet.
-	\item Nominal trace ($\mathbf{nominalTrace}$) as a timed event sequence as in Equation \ref{Eq:iotrace} on page \pageref{Eq:iotrace}. It is assumed that the number of events in the nominal trace is not less than 2.
-	\item Potentially faulty trace ($\mathbf{logTrace}$) as a timed event sequence as in Equation \ref{Eq:iotrace} on page \pageref{Eq:iotrace}
+	\item Nominal trace ($\mathbf{nominalTrace}$) as a timed event sequence as in section \ref{sec:ioseq}. It is assumed that the number of events in the nominal trace is not less than 2.
+	\item Analysis trace ($\mathbf{logTrace}$) as a timed event sequence as in section \ref{sec:ioseq}.
 \end{itemize}
 
-The output is a set of identified root causes ($\mathbf{IRC}$) and identified non-root causes ($\mathbf{INC}$) for the potentially faulty trace. The procedure attempts to identify the root causes using a search of Algorithm \ref{alg:main}. If such root causes are found, they are appended to the set of ($\mathbf{IRC}$). If the algorithm cannot perform the search onwards from a specific non-root cause, then this cause is added to the set of ($\mathbf{INC}$). This can happen either because of the HAZID table is incomplete or the cause to continue the search with is not present in the set of deviations. Both output sets might be empty, when there are no deviations (a nominal trace is provided as an input to the algorithm).
+The output is a set of identified root causes ($\mathbf{IRC}$) and identified non-root causes ($\mathbf{INC}$) for the analysis trace. The procedure attempts to identify the root causes using a search of Algorithm \ref{alg:main}. If such root causes are found, they are appended to the set of ($\mathbf{IRC}$). If the algorithm cannot perform the search onwards from a specific non-root cause, then this cause is added to the set of ($\mathbf{INC}$). This can happen either because of the HAZID table is incomplete or the cause to continue the search with is not present in the set of deviations. Both output sets might be empty, when there are no deviations (a nominal trace is provided as an input to the algorithm).
 
 The notations which are used in the description of the algorithm are defined as follows:
 
@@ -211,25 +216,33 @@ After the recursion finished, set $\mathbf{IRC}$ contains the set of identified 
 $\mathbf{INC}$ contain the set of deviations which might lead to a failure but either do not occur in the list
 of deviations in advance of the actual deviation or the search could not find any row in the $\mathbf{HAZID}$ table with which it could move forward.
 
-For example, for the faulty trace case presented in section \ref{sec:casestudy}, the working sets of the algorithm are calculated as it can be seen on table \ref{tbl:algVariables}.
+For example, for nominal trace 
 
-\begin{table*}
+$(1;1,0;NO) (2;1,0;LOW) (3;1,0;NRM) (4;1,1;NRM)$
+
+and analysis trace 
+
+$(1;1,0;NO) (2;1,0;NO) (3;1,0;NO) (4;1,1;NO)$
+
+the working sets of the algorithm are calculated as it can be seen on table \ref{tbl:algVariables}.
+
+\begin{table}
 \label{tbl:algVariables}
 \begin{tabular}{p{12cm}}
 \hline
-   $\mathbf{DEV} \leftarrow \{ \mathbf{never-happened} ~(1;~0,1,N),\mathbf{smaller} ~(1;~ 0,1,N),$ 
-   $\mathbf{earlier} ~(2;~ 0,1,L),\mathbf{smaller} ~(2;~ 0,1,L),\mathbf{earlier} ~(3;~ 0,1,0) \}$ \\
+   $\mathbf{DEV} \leftarrow \{ \mathbf{never-happened} ~(2;0,1;LOW),\mathbf{never-happened} ~(3;0,1;NRM),$ 
+   $\mathbf{never-happened} ~(4;1,1;NRM),\mathbf{smaller} ~(2;0,1;LOW),\mathbf{smaller} ~(3;0,1;NRM),\mathbf{smaller} ~(4;1,1;NRM) \}$ \\
 
-   $\mathbf{FDP} \leftarrow \{ (\mathbf{smaller} ~(2;~ 0,1,L),\mathbf{earlier} ~(3;~ 0,1,0) );(\mathbf{earlier} ~(2;~ 0,1,L) $
-   $\mathbf{earlier} ~(3;~ 0,1,0) \}$ \\
+   $\mathbf{FDP} \leftarrow \{ (\mathbf{smaller} ~(3;0,1;NRM),\mathbf{never-happened} ~(3;0,1;NRM),$\\
+    $\mathbf{smaller} ~(4;0,1;NRM),\mathbf{never-happened} ~(4;0,1;NRM) $ \\   
 
-   $\mathbf{IRC} \leftarrow \{ \mathbf{leakage} ~TA~(1), \mathbf{leakage} ~TA~(0) \}$ \\
+   $\mathbf{IRC} \leftarrow \{ \mathbf{tank~leak} ~(0), \mathbf{va1-congestion} ~(0) \}$ \\
 
-   $\mathbf{INC} \leftarrow \{ \mathbf{smaller} ~(0;~1,1,N) \}$ \\
+   $\mathbf{INC} \leftarrow \{ \mathbf{smaller}~(1;1,0;NO),\mathbf{later}~(2;1,0;LOW)\}$ \\
 \hline
 \end{tabular}
 \caption{Sets of the case study in section \ref{sec:casestudy} }
-\end{table*}
+\end{table}
 
 \section{Implementation}
 The algorithm was implemented in Java and uses a simple XML format for parsing the nominal and the analysis trace and the HAZID spreadsheet. During execution the following information is printed out to the console:
@@ -242,11 +255,10 @@ The algorithm was implemented in Java and uses a simple XML format for parsing t
 \item Set of identified root and non-root causes.
 \end{itemize}
 
-The source code of the algorithm can be acquired from \ref{GITHUB}.
-
 \section{Case Study}
 
 \subsection{Process system}
+\label{ref:procsys}
 
 In the case study the simple process system of figure \ref{fig:tank} was used to evaluate the algorithm. It consists of a fluid tank, an input (VA1) and an output (VA2) valve and a level sensor (LI), therefore it has two boolean inputs (the state of the valves, open or closed) and a single qualitative output, the value of the level sensor. For the sake of simplicty, boolean valve states and a reduced qualitative range ({0,L,N}) was used, but it could have been possible to use more input states and a broader qualitative range (these issues will be addressed in \ref{discussion}). 
 
@@ -263,7 +275,7 @@ The component faults were single and static during the execution of the operatio
 \item The leak of the tank. On the leak the fluid loss over time was equal to open output (VA2) valve.
 \item Input (VA1) or output (VA2) valve close failure (valve cannot be closed).
 \item Input (VA1) or output (VA2) valve congestion (no fluid could pass the valve).
-\item Additive positive or negative bias of the tank level sensor LI TThe qualitative range was extended with values e- ("immeasurably low") and e+("immeasurably high") - therefore the sensor was measuring values in qualitative range {e-,0,L} in the negative bias case and {L,N,e+} in the positive bias case.
+\item Additive positive or negative bias of the tank level sensor LI TThe qualitative range was extended with values e- ("immeasurably low") and e+("immeasurably high") - therefore the sensor was measuring values in qualitative range $\mathbf{e-,0,L}$ in the negative bias case and $\mathbf{L,N,e+}$ in the positive bias case.
 \end{enumerate}
 
 \subsection{Operational procedures}
@@ -313,7 +325,7 @@ VA2-CONGESTION(1) & greater(4;1,1,N) & not available \\
 
 \subsection{Results}
 
-After executing the algorithm on the nominal and faulty traces and the procedural HAZID table, the following results were be obtained for the "Normal operational procedure" during the presence of various single failures.
+After executing the algorithm on the nominal and faulty traces and the procedural HAZID table, the following identified root causes ($\mathbf{IRC}) and non-identified root causes ($\mathbf{INC}) were obtained using the algorithm for the "Normal operational procedure" during the presence of the single failures (refer to \ref{ref:procsys}).
 
 \begin{itemize}
 
@@ -361,7 +373,7 @@ The method could be extended to work on real-time trace deviation data instead o
 \section{Conclusion}
 A novel diagnostic algorithm for diagnosing faults in process systems during operational procedure execution was described in this paper. The algorithm is based on the fault diagnostic idea described in \cite{KES2011} extending the HAZID methodology for operational procedures. It had been implemeneted in Java and uses a simple XML data format as input for the procedures and additional HAZID information. A case study in a simple test process system is presented with appropriate results, and ways for further improvement were collected in \ref{discussion}.
 
-\subsubsection{Acknowledgments}
+\subsubsection{Acknowledgements}
 
 ???
 
