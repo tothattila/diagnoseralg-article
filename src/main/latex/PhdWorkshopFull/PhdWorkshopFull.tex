@@ -30,18 +30,18 @@ In the first part the basic notions which are used to describe and compare opera
 
 \subsection{Qualitative range spaces}
 \label{sec:qualrngspc}
-Current values of continuous outputs in process systems can be described using a properly selected qualitative range space. To describe a value of a level sensor of a tank, the following range space can be used:
+Current values of continuous outputs in process systems can be described using a properly selected qualitative range space. For example, to describe a value of a level sensor in a tank, the following range space can be used:
 
 $\{\mathbf{e-},0,L,N,\mathbf{e+}\}$
 
-Here $0$ means an empty tank, $L$ and $N$ means low and normal fluid level respectively, while $\mathbf{e-}$ and $\mathbf{e+}$ refer to unmeasurably low and high fluid levels (this might refer to a failure in the level sensor itself). This range space will be used to describe system outputs during operation.
+Here $0$ means an empty tank, $L$ and $N$ means low and normal fluid level respectively, while $\mathbf{e-}$ and $\mathbf{e+}$ refer to unmeasurably low and high fluid levels (this might mean a failure in the level sensor itself). This range space will be used to describe system outputs during operation.
 
 \subsection{Input-output event sequences}
 \label{sec:ioseq}
 
 Operational procedures in process systems are detailed list of instructions for the plant operator personnel to perform certain operations on the plant. Procedures can be formally described using finite input-output event sequences where one single event describes a change in either the inputs or the outputs of the system at a specific time instant. Therefore the syntax of a single input-output event is the following:
 
-$event_x=(time-instant;{set~of~actual~input~states};{set~of~actual~output~states})$
+$event_x=(time-instant;{set~of~input~states};{set~of~output~states})$
 
 The inputs in an event always refers to a state of an actuator component in the process system (eg. in the case of a valve it can be opened(1) or closed(0)). On the other hand, the outputs in an event refer to a value of an output of the process system in qualitative range using the qualitative set defined in section \ref{sec:qualrngspc}. Input-output event sequences are referred as traces later in the paper. As an example, a simple operational procedure can be described by the following trace over the inputs and the outputs of the system:
 
@@ -50,8 +50,8 @@ $(1;1,0;0) (2;1,0;L) (3;1,0;N) (4;1,1;N)$
 For every operational procedure there exists a trace which describe its behavior under fault-free conditions. The method compares this trace to other traces which may have been executed under faulty conditions (called characteristic traces), these differences (called deviations) are later used to find possible malfunctions of components in the system.
 
 \subsection{Deviations}
-\ref{sec:deviations}
-Nominal and characteristic traces can be compared by comparing their correspoinding event fragments. Deviations are formed from a deviation guideword and the nominal event from which the corresponding characteristic trace event is deviationg from. Two main deviation types can be distinguished.
+\label{sec:deviations}
+Nominal and characteristic traces can be compared by comparing their correspoinding event fragments. Deviations are formed from a deviation guideword and the nominal event from which the corresponding characteristic trace event is deviating from. Two main deviation types can be distinguished.
 
 \begin{itemize}
 \item Temporal deviations. The input-output combination of the event did not happen exactly at the time instant as in the nominal event. 
@@ -60,7 +60,7 @@ Nominal and characteristic traces can be compared by comparing their correspoind
 	  \item $\mathbf{later}$ The event happened later in the characteristic trace.
 	  \item $\mathbf{never-happened}$ The event never happened at all in the characteristic trace.
 	\end{itemize}
-\item Qualitative value deviations. The output of the event is different from the nominal event. The relational operators are described in \cite{QUALCAL} to compare different qualitative values.
+\item Qualitative value deviations. The output of the event is different from the nominal event. The relational operators described in \cite{QUALCAL} to compare different qualitative values.
 	\begin{itemize}
 	  \item $\mathbf{greater}$ The output is greater in the characteristic trace.
 	  \item $\mathbf{smaller}$ The output is smaller in the characteristic trace.
@@ -76,7 +76,7 @@ As one type of traditional type of HAZID (HAZard IDentification) analysis, the H
 
 As an other widely used and classical type of HAZID analysis, the FMEA (Fault Mode and Effect Analysis) analysis is initiated from failures in system subcomponents (called root causes), exploring the local and system-wide effects of these malfunctions, under steady-state plant conditions. As in the case of HAZOP, the results are kept in a spreadsheet (see table \ref{tab:efmea}). The combination of these two diagnostic approaches is not new (a method to find FMEA root causes from HAZOP measurable variable deviations is described in \cite{HAZOP-FMEA-ARTICLE}) but it had not been extended to operational procedure diagnosis.
 
-Combining these diagnostic ideas in the domain of operational procedures, it becomes possible to connect deviations (as in HAZOP) between separate traces and acquire feasible component failures called root causes (as in FMEA). In such an extended analysis (called as procedure HAZID or  $\mathbf{P-HAZID}$, see table \ref{tab:eprochazid}) a chain of deviations (see \ref{sec:Deviations}) can be set up to by matching deviations of the "Cause" and "Deviation" column with their equal counterparts in the "Cause" and "Implication" column for a different row. If the analysis is consistent, then all of these deviation chains lead to a root cause which indicate specific component failures (eg. rupture of the tank) provided all deviations in the chain are present between an observed and a reference trace (described in section \ref{sec:deviations}). Following all possible deviation chains based on the collected deviations a set of possible component failures can be found given a properly defined $\mathbf{P-HAZID}$ table. 
+Combining these diagnostic ideas in the domain of operational procedures, it becomes possible to connect deviations (as in HAZOP) between separate traces and acquire feasible component failures called root causes (as in FMEA). In such an extended analysis (called as procedure HAZID or  $\mathbf{P-HAZID}$, see table \ref{tab:eprochazid}) a chain of deviations (see \ref{sec:deviations}) can be set up to by matching deviations of the "Cause" and "Deviation" column with their equal counterparts in the "Cause" and "Implication" column for a different row. If the analysis is consistent, then all of these deviation chains lead to a root cause which indicate specific component failures (eg. rupture of the tank) provided all deviations in the chain are present between an observed and a reference trace (described in section \ref{sec:deviations}). Following all possible deviation chains based on the collected deviations a set of possible component failures can be found given a properly defined $\mathbf{P-HAZID}$ table. 
 
 It was assumed that component failures were static, and happened before the execution of the procedure has begun. Therefore, unlike in the case of deviations, time instants were not assigned to them. The component failures were not connected to any input or output values in any direct way, so these values had been also omitted from their definition. 
 
@@ -96,7 +96,8 @@ high & LEVEL high & HIGH input & TANK rupture \\
 \end{tabular}
 \end{table}
 
-\begin{table}
+\begin{table*}
+\centering
 \label{tab:efmea}
 \caption{A simple example of an FMEA table}
 \begin{tabular}{|l|l|l|l|l|}
@@ -109,7 +110,7 @@ TANK & leaking & rupture & LOW tank output & escaping fluid \\
 OUTPUT VALVE & close failure & broken & LOW fluid level & output tank cannot be changed \\
 \hline
 \end{tabular}
-\end{table}
+\end{table*}
 
 \begin{table*}
 \centering
@@ -149,7 +150,7 @@ If the $\mathbf{P-HAZID}$ table is inconsistent (not all deviation sequences lea
 \section{Diagnosis Using Observed Event Sequences and Procedure HAZID}
 \label{sec:reasoning}
 
-As described in \ref{sec:prochazid}, the diagnosis is based on the fact that a row in the $\mathbf{P-HAZID}$
+As described in section \ref{sec:prochazid}, the diagnosis is based on the fact that a row in the $\mathbf{P-HAZID}$
 table can be interpreted as one of the rules below:
 \begin{small}
 \begin{eqnarray*}
@@ -219,7 +220,7 @@ In either cases the algorithm adds the cause to the set of $\mathbf{INC}$ and mo
 \EndFor
 \State $\mathbf{INC} \leftarrow \{ \emptyset \}$
 \State $\mathbf{IRC} \leftarrow \{ \emptyset \}$
-\State $\mathbf{t_{FDP}}$=$\{ \exists (\mathbf{t},d_1) \in \mathbf{DEV}, (\mathbf{t-1},d_2) \in \mathbf{DEV} \}$
+\State $\mathbf{t_{FDP}}$=$\{ \exists \mathbf{t}, \exists d_1, \exists d_2, (\mathbf{t},d_1) \in \mathbf{DEV}, (\mathbf{t-1},d_2) \in \mathbf{DEV} \}$
 \State $\mathbf{FDP} \leftarrow \{(\forall d_1,\forall d_2 (\mathbf{t_{FDP}-1},d1) \in \mathbf{DEV},(\mathbf{t_{FDP}},d2) \in \mathbf{DEV}, (\mathbf{t_{FDP}-1},d_1) \times (\mathbf{t_{FDP}},d_2) \}$ 
 \ForAll{$pair \in \mathbf{FDP}$}
   \State $startDeviation \leftarrow proj_1(pair)$
@@ -330,7 +331,7 @@ $(1;0,1;N) (2;0,1;L) (3;0,1;0) (4;0,0;0)$
 $(1;1,0;0) (2;1,0;L) (3;1,0;N) (4;0,0;N)$
 \end{itemize}
 
-The $\mathbf{P-HAZID}$ table containing the fault root causes based on the faulty traces were created for each operational procedure. For the "Normal operational procedure" the table is presented in Table \ref{tab:normalophazid}
+The $\mathbf{P-HAZID}$ table containing the fault root causes based on the faulty traces were created for each operational procedure. For the "Normal operational procedure" the table is presented in Table \ref{tab:normalophazid}.
 
 \begin{table*}
 \centering
@@ -366,7 +367,7 @@ VA2-CONGESTION & greater(4;1,1,N) & not available \\
 
 \subsection{Results}
 
-After executing the algorithm on the nominal and faulty traces and the $\mathbf{P-HAZID}$ table, the following identified root causes ($\mathbf{IRC}$) and non-identified root causes ($\mathbf{INC}$) were obtained using the algorithm with the "Normal operational procedure" during the presence of the single failures (refer to subsection \ref{ref:procsys}).
+After executing the algorithm on the nominal and faulty traces and the $\mathbf{P-HAZID}$ table, the following identified root causes ($\mathbf{IRC}$) and non-identified root causes ($\mathbf{INC}$) were obtained using the algorithm with the "Normal operational procedure" during the presence of the single failures (refer to subsection \ref{sec:procsys}).
 
 \begin{itemize}
 
@@ -376,9 +377,9 @@ After executing the algorithm on the nominal and faulty traces and the $\mathbf{
 
 \item Fault VA2-CONGESTION: Too few deviations, fault could not be detected.
 
-\item Fault VA1-CLOSEFAILURE: Trace was identical, fault could not be detected.
+\item Fault VA1-CLOSE-FAILURE: Trace was identical, fault could not be detected.
 
-\item Fault VA2-CLOSEFAILURE: Trace was identical, fault could not be detected.
+\item Fault VA2-CLOSE-FAILURE: Trace was identical, fault could not be detected.
 
 \item Fault POS-BIAS: \\ $\mathbf{IRC} \leftarrow \{ POS-BIAS \}$ \\ $\mathbf{INC} \leftarrow \{ \emptyset \} $
 
@@ -395,8 +396,8 @@ The case study proved that the diagnostic algorithm produced the expected result
 
 \begin{enumerate}
 \item When the faulty trace generates very representative deviations then the algorithm is accurate, it gives the real root cause with no spurious or unresolved causes (in the case of POS-BIAS).
-\item When the faulty trace is identical to the nominal or too few deviations can be found, then faults cannot be diagnosed (in the case of VA2-CONGESTION, VA1-CLOSEFAILURE or VA2-CLOSEFAILURE).
-\item Obviously, when faults are present in component functionality which is not used (in the case of VA1-CLOSEFAILURE or VA2-CLOSEFAILURE) then these faults remain undetectable.
+\item When the faulty trace is identical to the nominal or too few deviations can be found, then faults cannot be diagnosed (in the case of VA2-CONGESTION, VA1-CLOSE-FAILURE or VA2-CLOSE-FAILURE).
+\item Obviously, when faults are present in component functionality which is not used (in the case of VA1-CLOSE-FAILURE or VA2-CLOSE-FAILURE) then these faults remain undetectable.
 \item When faults have similar effects on the system (in the case of VA1-CONGESTION and TANK-LEAK), then faults are detectable, albeit they cannot be distinguished from each other and both of them are present in the result set.
 \end{enumerate}
 
@@ -408,15 +409,14 @@ In order to increase the accurancy of the diagnostic algorithm, the following im
 \end{enumerate}
 
 \section {Conclusion and Future work}
-A novel diagnostic algorithm for diagnosing faults in process systems during operational procedure execution has been described in this paper. The algorithm is based on the fault diagnostic idea described in \cite{KES2011} extending the traditional HAZOP process system diagnostic methodology for operational procedures. It had been implemeneted in Java and uses a simple XML data format as input for the procedures and additional HAZID information. A case study in a simple test process system is presented with appropriate results, and ways for further improvement were collected in \ref{discussion}.
+A novel diagnostic algorithm for diagnosing faults in process systems during operational procedure execution has been described in this paper. The algorithm is based on the fault diagnostic idea described in \cite{KES2011} extending the traditional HAZOP process system diagnostic methodology for operational procedures. It had been implemeneted in Java and uses a simple XML data format as input for the procedures and additional HAZID information. A case study in a simple test process system is presented with appropriate results, and ways for further improvement were collected in \ref{sec:discussion}.
 
 It would be benefical to evaluate the method on a more complex process system with more outputs and increased qualitative range on them. An appropriate process system need to be selected, and simulations need to be executed to acquire traces under nominal and faulty conditions and create the $\mathbf{P-HAZID}$ table. The algorithm itself should be extended as well to handle multiple outputs.
 
 The method could be extended to work on real-time trace deviation data instead of offline source, in this case significant modifications need to be implemented but the applicability of the algorithm would be greatly increased.
 
-\subsubsection{Acknowledgements}
-
-OTKA 83440
-TÁMOP x
+\section{Acknowledgements} 
+We acknowledge the financial support of this work by the Hungarian State and the European Union under the TAMOP-????? project and by the Hungarian Scientific Research Fund through
+grants K83440.
 
 \end{document}
