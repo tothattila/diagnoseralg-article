@@ -6,6 +6,7 @@
 \usepackage{algpseudocode}
 \bibliographystyle{IEEEtran}
 
+
 \newcommand{\tss}{\textsuperscript}
 
 \title{HAZID Information Based Operational Procedure Diagnosis Method}
@@ -17,12 +18,12 @@
 
 \begin{abstract}
 
-A novel fault diagnostic algorithm is presented in this paper based on the diagnostic idea described in \cite{KES:-:2011} for fault detection during operational procedure execution in  process systems. The basis of the method is an extension of a traditional HAZID methodology with procedural deviation information. A case study for demonstrating the capabilities of the algorithm on a simple example process system model with multiple operational procedures and multiple component faults is also presented.
+A novel fault diagnostic algorithm is presented in this paper based on the diagnostic idea described in \cite{KES2011} for fault detection during operational procedure execution in  process systems. The basis of the method is an extension of a traditional HAZID methodology with procedural deviation information. A case study for demonstrating the capabilities of the algorithm on a simple example process system model with multiple operational procedures and multiple component faults is also presented.
  
 \end{abstract}
 
 \section{Introduction}
-Detecting and diagnosing faults in complex process systems is an important task in ensuring safe operation and preventing losses. Albeit there had been results (\cite{original}) for detection of faults in steady-state process systems using hazard identification (HAZID), HAZOP and FMEA analysis results, but the transient case - when the plant is controlled by an operational procedure - is not addressed in them. The diagnostic idea described in \cite{KES-2011} offers a solution for this case. By extending the traditional HAZOP analysis with procedural deviations and root causes a novel way for searching component faults can be constructed. Using an appropriate comparison between reference and possibly faulty input-output event sequences of operational procedures a component fault can be diagnosed from the extended HAZOP analysis result. The algorithm formulated from this diagnostic idea is described in this paper. 
+Detecting and diagnosing faults in complex process systems is an important task in ensuring safe operation and preventing losses. Albeit there had been results (\cite{qualmodel_hazop}) for detection of faults in steady-state process systems using hazard identification (HAZID), HAZOP and FMEA analysis results, but the transient case - when the plant is controlled by an operational procedure - is not addressed in them. The diagnostic idea described in \cite{KES2011} offers a solution for this case. By extending the traditional HAZOP analysis with procedural deviations and root causes a novel way for searching component faults can be constructed. Using an appropriate comparison between reference and possibly faulty input-output event sequences of operational procedures a component fault can be diagnosed from the extended HAZOP analysis result. The algorithm formulated from this diagnostic idea is described in this paper. 
 
 In the first part the basic notions which are used to describe and compare operational procedure executions with each other are collected, and the structure of the extended procedure HAZOP (procedure HAZID) analysis is described. Later the algorithm is formally defined and its capabilities are demonstrated using a simple case study. 
 
@@ -60,7 +61,7 @@ Nominal and characteristic traces can be compared by comparing their correspoind
 	  \item $\mathbf{later}$ The event happened later in the characteristic trace.
 	  \item $\mathbf{never-happened}$ The event never happened at all in the characteristic trace.
 	\end{itemize}
-\item Qualitative value deviations. The output of the event is different from the nominal event. The relational operators described in \cite{QUALCAL} to compare different qualitative values.
+\item Qualitative value deviations. The output of the event is different from the nominal event. The relational operators described in \cite{KES2010} to compare different qualitative values.
 	\begin{itemize}
 	  \item $\mathbf{greater}$ The output is greater in the characteristic trace.
 	  \item $\mathbf{smaller}$ The output is smaller in the characteristic trace.
@@ -74,7 +75,7 @@ It is possible to have both temporal and qualitative value deviations for a sing
 
 As one type of traditional type of HAZID (HAZard IDentification) analysis, the HAZOP (HAZard and OPerability) analysis is widely used in the field of process system engineering to ensure operational safety during function. This analysis connects possible deviations of the measureable variables in the system with their causes and consequences under steady-state plant conditions. The results of such analysis are grouped by the type of the deviation (called "guideword") and are stored in a spreadsheet form (see table \ref{tab:ehazop}). 
 
-As an other widely used and classical type of HAZID analysis, the FMEA (Fault Mode and Effect Analysis) analysis is initiated from failures in system subcomponents (called root causes), exploring the local and system-wide effects of these malfunctions, under steady-state plant conditions. As in the case of HAZOP, the results are kept in a spreadsheet (see table \ref{tab:efmea}). The combination of these two diagnostic approaches is not new (a method to find FMEA root causes from HAZOP measurable variable deviations is described in \cite{HAZOP-FMEA-ARTICLE}) but it had not been extended to operational procedure diagnosis.
+As an other widely used and classical type of HAZID analysis, the FMEA (Fault Mode and Effect Analysis) analysis is initiated from failures in system subcomponents (called root causes), exploring the local and system-wide effects of these malfunctions, under steady-state plant conditions. As in the case of HAZOP, the results are kept in a spreadsheet (see table \ref{tab:efmea}). The combination of these two diagnostic approaches is not new (a method to find FMEA root causes from HAZOP measurable variable deviations is described in \cite{com_hazop_fmea}) but it had not been extended to operational procedure diagnosis.
 
 Combining these diagnostic ideas in the domain of operational procedures, it becomes possible to connect deviations (as in HAZOP) between separate traces and acquire feasible component failures called root causes (as in FMEA). In such an extended analysis (called as procedure HAZID or  $\mathbf{P-HAZID}$, see table \ref{tab:eprochazid}) a chain of deviations (see \ref{sec:deviations}) can be set up to by matching deviations of the "Cause" and "Deviation" column with their equal counterparts in the "Cause" and "Implication" column for a different row. If the analysis is consistent, then all of these deviation chains lead to a root cause which indicate specific component failures (eg. rupture of the tank) provided all deviations in the chain are present between an observed and a reference trace (described in section \ref{sec:deviations}). Following all possible deviation chains based on the collected deviations a set of possible component failures can be found given a properly defined $\mathbf{P-HAZID}$ table. 
 
@@ -418,5 +419,7 @@ The method could be extended to work on real-time trace deviation data instead o
 \section{Acknowledgements} 
 We acknowledge the financial support of this work by the Hungarian State and the European Union under the TAMOP-????? project and by the Hungarian Scientific Research Fund through
 grants K83440.
+
+\bibliography{IEEEabrv,PhdWorkshopFull}
 
 \end{document}
