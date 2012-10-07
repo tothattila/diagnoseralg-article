@@ -33,9 +33,12 @@ At the beginning of the article the basic notions are collected which are used t
 \label{sec:qualrngspc}
 Current values of continuous outputs in process systems can be described using a properly selected qualitative range space. For example, to describe a value of a level sensor in a tank, the following range space can be used:
 
-$Q_e=\{\mathbf{e-},0,L,N,\mathbf{e+}\}$
+\begin{equation}
+\label{eq:qe}
+Q_e=\{\mathbf{e-},0,L,N,H,\mathbf{e+}\}
+\end{equation}
 
-Here $0$ means an empty tank, $L$ and $N$ means low and normal fluid level respectively, while $\mathbf{e-}$ and $\mathbf{e+}$ refer to unmeasurably low and high fluid levels (this might mean a failure in the level sensor itself). This range space will be used to describe system outputs during operation.
+Here $0$ means an empty tank, $L$, $N$ and $H$ means low, normal and high fluid level respectively, while $\mathbf{e-}$ and $\mathbf{e+}$ refer to unmeasurably low and high fluid levels (this might mean a failure in the level sensor itself). This range space will be used to describe system outputs during operation.
 
 \subsection{Input-output event sequences}
 \label{sec:ioseq}
@@ -44,7 +47,7 @@ Operational procedures in process systems are detailed list of instructions for 
 
 $event_t=(time-instant;{input~states};{output~states})$
 
-The inputs in an event always refers to a state of an actuator component in the process system (eg. in the case of a valve it can be opened(1) or closed(0)). On the other hand, the outputs in an event refer to a value of an output of the process system in qualitative range using the qualitative set defined in Section \ref{sec:qualrngspc}. Sequences formed from these events are called traces and defined as:
+The inputs in an event always refers to a state of an actuator component in the process system (eg. in the case of a valve it can be opened(1) or closed(0)). On the other hand, the outputs in an event refer to a value of an output of the process system in qualitative range using the qualitative set defined in (\ref{eq:qe}). Sequences formed from these events are called traces and defined as:
 
 $T(t_1,t_n)={event_{t_1},...,event_{t_n}}$
 
@@ -152,7 +155,6 @@ The algorithm uses this technique first to find possible  $\textbf{P-HAZID}$ row
 
 If the $\textbf{P-HAZID}$ table is incomplete (not all deviation sequences lead to root causes) then it may end up at a row from where it cannot proceed forward, therefore the algorithm can be used for validation purposes, too. 
 
-%
 \section{Diagnosis Using Observed Event Sequences and Procedure HAZID}
 \label{sec:reasoning}
 
@@ -305,7 +307,7 @@ The algorithm was implemented in Java and uses a simple XML format for parsing t
 \subsection{Process system}
 \label{sec:procsys}
 
-In the case study the simple process system of figure \ref{fig:tank} was used to evaluate the algorithm. It consists of a fluid tank, an input (VA) and an output (VB) valve and a level sensor (LI), therefore it has two boolean inputs (the state of the valves, open or closed) and a single qualitative output, the value of the level sensor. For the sake of simplicty, boolean valve states and a reduced qualitative range (see Section \ref{sec:qualrngspc}) was used, but it could have been possible to use more input states and a broader qualitative range (these issues will be addressed in Section \ref{sec:discussion}). 
+In the case study the simple process system of figure \ref{fig:tank} was used to evaluate the algorithm. It consisted of a fluid tank, an input (VA) and an output (VB) valve and a level sensor (LI), therefore it had two boolean inputs (the state of the valves, open or closed) and a single qualitative output, the value of the level sensor. For the sake of simplicty, boolean valve states and a reduced qualitative range (see Section \ref{sec:qualrngspc}) was used, but it could have been possible to use more input states and a broader qualitative range (these issues will be addressed in Section \ref{sec:discussion}). 
 
 \begin{figure}[h!]
  \begin{center}
@@ -320,18 +322,18 @@ The component faults were always single and static during the execution of the o
 \item The leak of the tank. On the leak the fluid loss over time was equal to what caused by the open output (VB) valve.
 \item Input (VA) or output (VB) valve close failure (valve cannot be closed).
 \item Input (VA) or output (VB) valve congestion (no fluid could pass the valve).
-\item Additive positive or negative bias of the tank level sensor LI. The sensor was measuring values in qualitative range $\{\mathbf{e-},0,L\}$ in the negative bias case and $\{L,N,\mathbf{e+}\}$ in the positive bias case (see Section \ref{sec:qualrngspc} for the whole range).
+\item Additive positive or negative bias of the tank level sensor LI. The sensor was measuring values in qualitative range $\{\mathbf{e-},0,L,N\}$ in the negative bias case and $\{L,N,H,\mathbf{e+}\}$ in the positive bias case (see Section \ref{sec:qualrngspc} for the whole range).
 \end{enumerate}
 
 \subsection{Operational procedures}
 
 These simple operational procedures were collected for the process system:
 \begin{itemize}
-\item Normal operation. Describes a normal operation of the system. The tank is filled using the input valve, then the output valve is opened. The corresponding nominal trace:
+\item Normal operation. Describes a normal operation of the system. The tank is filled using the input valve, then the output valve is opened. The corresponding nominal trace: \\
 $T(t_1,t_4)=(1;1,0;0),(2;1,0;L),(3;1,0;N),(4;1,1;N)$
-\item Maintenance empty procedure. Describes a maintenance procedure when all fluid is removed from the system through the output valve. The corresponding nominal trace:
+\item Maintenance empty procedure. Describes a maintenance procedure when all fluid is removed from the system through the output valve. The corresponding nominal trace: \\
 $T(t_1,t_4)=(1;0,1;N),(2;0,1;L),(3;0,1;0),(4;0,0;0)$
-\item Tank fill procedure. Describes a special procedure when the tank is filled with fluid and then the input valve is closed. The corresponding nominal trace:
+\item Tank fill procedure. Describes a special procedure when the tank is filled with fluid and then the input valve is closed. The corresponding nominal trace: \\
 $T(t_1,t_4)=(1;1,0;0),(2;1,0;L),(3;1,0;N),(4;0,0;N)$
 \end{itemize}
 
