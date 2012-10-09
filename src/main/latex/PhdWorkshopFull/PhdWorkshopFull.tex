@@ -45,7 +45,7 @@ Here $0$ means an empty tank, $L$, $N$ and $H$ means low, normal and high fluid 
 
 Operational procedures in process systems are detailed list of instructions for the plant operator personnel to perform certain operations on the plant. Procedures can be formally described using finite input-output event sequences where one single event describes a change in either the inputs or the outputs of the system at a specific time instant. Therefore the syntax of a single input-output event (at time instant $t$) is the following:
 
-$event_t=(time-instant;{input~states};{output~states})$
+$event_t=(t;{input~states};{output~states})$
 
 The inputs in an event always refers to a state of an actuator component in the process system (eg. in the case of a valve it can be opened(1) or closed(0)). On the other hand, the outputs in an event refer to a value of an output of the process system in qualitative range using the qualitative set defined in (\ref{eq:qe}). Sequences formed from these events are called traces and defined as:
 
@@ -55,7 +55,7 @@ Separate events in a trace contain the same inputs and outputs. As an example, a
 
 $T(t_1,t_4)=(1;1,0;0),(2;1,0;L),(3;1,0;N),(4;1,1;N)$
 
-For every operational procedure there exists a trace (called the nominal trace) which describes its behavior under fault-free conditions. The method compares this trace to other traces which may have been executed under faulty conditions (called characteristic traces), these differences (called deviations) are later used to find possible malfunctions of components in the system.
+For every operational procedure there exists a trace (called the nominal trace) which describes its behavior under fault-free conditions. The method compares this trace to other traces which may have been executed under faulty conditions (called characteristic traces), and the differences (called deviations) are later used to find possible malfunctions of components in the system.
 
 \subsection{Deviations}
 \label{sec:deviations}
@@ -114,7 +114,7 @@ Component & Failure mode & Failure mode causes & Local effects & System effects 
 \hline
 TANK & leaking & rupture & LOW tank output & escaping fluid \\
 \hline
-OUTPUT VALVE & close failure & broken & LOW fluid level & output tank cannot be changed \\
+OUTPUT VALVE & close failure & broken & LOW fluid level & output tank cannot be replaced \\
 \hline
 \end{tabular}
 \caption{A simple example of an FMEA table}
@@ -415,7 +415,7 @@ In order to increase the accurancy of the diagnostic algorithm, the following im
 \end{enumerate}
 
 \section {Conclusion and Future work}
-A novel diagnostic algorithm for diagnosing faults in process systems during operational procedure execution has been described in this paper. The algorithm is based on the fault diagnostic idea described in \cite{KES2011} extending the traditional HAZOP process system diagnostic methodology for operational procedures. It had been implemeneted in Java and uses a simple XML data format as input for the procedures and additional HAZID information. A case study in a simple test process system is presented with appropriate results, and ways for further improvement were collected in \ref{sec:discussion}.
+A novel diagnostic algorithm for diagnosing faults in process systems during operational procedure execution has been described in this paper. The algorithm is based on the fault diagnostic idea described in \cite{KES2011} extending the traditional HAZOP process system diagnostic methodology for operational procedures. It had been implemeneted in Java and uses a simple XML data format as input for the procedures and additional HAZID information. A case study in a simple test process system is presented with appropriate results, and ways for further improvement were collected in Section \ref{sec:discussion}.
 
 It would be benefical to evaluate the method on a more complex process system with more outputs and increased qualitative range on them. An appropriate process system need to be selected, and simulations need to be executed to acquire traces under nominal and faulty conditions and create the $\textbf{P-HAZID}$ table. The algorithm itself should be extended as well to handle multiple outputs.
 
